@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/MONSTER/Documents/github/advent-of-code-2015/day 3/main.cpp
+iostream
+-
+fstream
+-
+map
+-
+vector
+-
+

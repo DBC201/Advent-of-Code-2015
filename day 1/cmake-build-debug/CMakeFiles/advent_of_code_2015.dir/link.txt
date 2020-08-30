@@ -1,0 +1,3 @@
+C:\Users\MONSTER\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\202.6948.80\bin\cmake\win\bin\cmake.exe -E rm -f CMakeFiles\advent_of_code_2015.dir/objects.a
+C:\TDM-GCC-64\bin\ar.exe cr CMakeFiles\advent_of_code_2015.dir/objects.a @CMakeFiles\advent_of_code_2015.dir\objects1.rsp
+C:\TDM-GCC-64\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\advent_of_code_2015.dir/objects.a -Wl,--no-whole-archive  -o advent_of_code_2015.exe -Wl,--out-implib,libadvent_of_code_2015.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\advent_of_code_2015.dir\linklibs.rsp

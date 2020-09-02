@@ -1,0 +1,4 @@
+C:\Users\MONSTER\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\202.6948.80\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" C:\Users\MONSTER\Documents\github\advent-of-code-2015\day6
+-- Configuring done
+-- Generating done
+-- Build files have been written to: C:/Users/MONSTER/Documents/github/advent-of-code-2015/day6/cmake-build-debug

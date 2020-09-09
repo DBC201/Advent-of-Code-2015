@@ -3,11 +3,16 @@
 #include <vector>
 #include <sstream>
 #include <map>
-#include <stack>
-#include <queue>
+/*#include <stack>
+#include <queue>*/
 
 using namespace std;
 
+//below is a parser where each cable has to be assigned a value before having done any operation for it
+//for instance af AND ah -> ai being the first line will cause problems because none of those variables are declared
+//to declare a variable one could do 123 -> ah for instance
+//operate function elaborates better
+/*
 unsigned int return_parameter(string parameter, map<string, unsigned int> &wires){
     try {
         wires.at(parameter);
@@ -64,7 +69,6 @@ bool is_operator(string operand, map<string, int> command_precedence){
         return false;
     }
 }
-
 
 void parse_commands(vector<string> commands, map<string, unsigned int> &wires, map<string, int> command_precedence){
     stack<string> operators;
@@ -127,10 +131,51 @@ void parse_commands(vector<string> commands, map<string, unsigned int> &wires, m
             operators.push(current);
         }
     }
+}*/
+
+vector<string> return_sides(string wire, string op){
+    vector<string> return_val(2);
+    if (op == "NOT"){
+        return_val[0] = wire.substr(4, wire.length()-4);
+        return return_val;
+    }
+    int middle = wire.find(op);
+    return_val[0] = wire.substr(0, middle-1);
+    return_val[1] = wire.substr(middle+1+op.length(), wire.length()-(middle+1+op.length()));
+    return return_val;
+}
+
+
+unsigned int get_signal(string wire, map<string, string> &wires){
+    try{
+        return stoi(wire);
+    } catch (invalid_argument &e) {
+        wire = wires.at(wire);
+        vector<string> sides(2);
+       if(wire.find("AND") != string::npos){
+           sides = return_sides(wire, "AND");
+           return get_signal(sides[0], wires) & get_signal(sides[1], wires);
+       } else if(wire.find("OR") != string::npos) {
+           sides = return_sides(wire, "OR");
+           return get_signal(sides[0], wires) | get_signal(sides[1], wires);
+       } else if(wire.find("LSHIFT") != string::npos){
+           sides = return_sides(wire, "LSHIFT");
+           return get_signal(sides[0], wires) << get_signal(sides[1], wires);
+       } else if(wire.find("RSHIFT") != string::npos){
+           sides = return_sides(wire, "RSHIFT");
+           return get_signal(sides[0], wires) >> get_signal(sides[1], wires);
+       } else if(wire.find("NOT") != string::npos){
+           sides = return_sides(wire, "NOT");
+           return ~get_signal(sides[0], wires);
+       } else {
+           return get_signal(wire, wires);
+       }
+
+    }
 }
 
 int main() {
-    map<string, int> command_precedence = {
+    /*map<string, int> command_precedence = {
             {"->", 1},
             {"AND", 2},
             {"OR", 2},
@@ -138,21 +183,19 @@ int main() {
             {"RSHIFT", 2},
             {"NOT", 3}
     };
-    map<string, unsigned int> wires;
+    map<string, unsigned int> wires;*/
+    map<string, string> wires;
     fstream file;
     file.open("../input.txt", fstream::in);
     string line;
     while(getline(file, line)){
-        vector<string> commands;
-        string command;
-        stringstream ss(line);
-        while(getline(ss, command, ' ')){
-            commands.push_back(command);
-        }
-        parse_commands(commands, wires, command_precedence);
+        string left = line.substr(0, line.find("->")-1);
+        string right = line.substr(line.find("->")+3, line.length()-line.find("->")+3);
+        wires.insert(pair<string, string>(right, left));
+        //parse_commands(commands, wires, command_precedence);
+        //my initial approach was wrong a cable can be declared before it is assigned a value
     }
-    for (auto wire: wires){
-        cout << wire.first << ": " << wire.second << endl;
-    }
+    file.close();
+    cout << get_signal("i", wires) << endl;
     return 0;
 }

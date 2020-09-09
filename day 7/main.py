@@ -36,13 +36,13 @@ def get_wire(wire):
 
 if __name__ == "__main__":
 
-    file = open("input.txt", "r")
-    while True:
-        line = file.readline()
-        if not line:
-            break
-        line = line.split("->")
-        wires[line[1].strip()] = line[0].strip()
+    with open("input.txt", "r") as file:
+        while True:
+            line = file.readline()
+            if not line:
+                break
+            line = line.split("->")
+            wires[line[1].strip()] = line[0].strip()
     value = get_wire('a')
     print(value)
     

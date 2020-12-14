@@ -19,12 +19,9 @@ int count_new_increase (std::string str) {
     str = str.substr(1, str.length()-2);
     int increase = 4;
     for (int i=0; i<str.length(); i++) {
-        if (str[i] == '\\' && str[i+1] == '"') {
+        if ( str[i] == '\\' && (str[i+1] == '\\' || str[i+1] == '"')) {
             i++;
             increase += 2;
-        } else if (str[i] == '\\' && str[i+1] == '\\') {
-            i++;
-            increase+=2;
         } else if (str[i] == '\\') {
             i += 3;
             increase++;

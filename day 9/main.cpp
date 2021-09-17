@@ -4,7 +4,6 @@
 #include "../common/library.cpp"
 #include <string>
 #include <queue>
-#include <algorithm>
 
 std::unordered_map<std::string, std::unordered_map<std::string, int>> distances;
 

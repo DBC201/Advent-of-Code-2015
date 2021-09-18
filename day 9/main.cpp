@@ -3,7 +3,6 @@
 #include <unordered_map>
 #include "../common/library.cpp"
 #include <string>
-#include <queue>
 
 std::unordered_map<std::string, std::unordered_map<std::string, int>> distances;
 
@@ -41,22 +40,16 @@ void readfile() {
     file.close();
 }
 
-int min_primm(std::string starting_vertex) {
+int min_dfs(std::string starting_vertex) {
     std::unordered_map<std::string, bool> visited;
     for (const auto& v: distances) {
         visited.insert({v.first, false});
     }
 
-
-    std::queue<std::string> q;
-    q.push(starting_vertex);
-
     int smallest_distance = 0;
-    std::string vertex;
+    std::string vertex = starting_vertex;
 
-    while (!q.empty()) {
-        vertex = q.front();
-        q.pop();
+    while (!vertex.empty()) {
         visited.at(vertex) = true;
         std::pair<std::string, int> smallest_neighbor;
         smallest_neighbor.first = "";
@@ -67,65 +60,63 @@ int min_primm(std::string starting_vertex) {
             }
         }
         if (smallest_neighbor.first != "") {
-            q.push(smallest_neighbor.first);
+            vertex = smallest_neighbor.first;
             smallest_distance += smallest_neighbor.second;
+        } else {
+            break;
         }
     }
     return smallest_distance;
 }
 
-int minimum_using_primm() {
+int minimum() {
     int minimum = INT_MAX;
     for (const auto& v: distances) {
-        minimum = std::min(min_primm(v.first), minimum);
+        minimum = std::min(min_dfs(v.first), minimum);
     }
     return minimum;
 }
 
-int max_primm(std::string starting_vertex) {
+int max_dfs(std::string starting_vertex) {
     std::unordered_map<std::string, bool> visited;
     for (const auto& v: distances) {
         visited.insert({v.first, false});
     }
 
-
-    std::queue<std::string> q;
-    q.push(starting_vertex);
-
     int max_distance = 0;
-    std::string vertex;
+    std::string vertex = starting_vertex;
 
-    while (!q.empty()) {
-        vertex = q.front();
-        q.pop();
+    while (!vertex.empty()) {
         visited.at(vertex) = true;
-        std::pair<std::string, int> max_neighbor;
-        max_neighbor.first = "";
-        max_neighbor.second = 0;
+        std::pair<std::string, int> smallest_neighbor;
+        smallest_neighbor.first = "";
+        smallest_neighbor.second = 0;
         for (const auto &neighbor: distances.at(vertex)) {
-            if (!visited.at(neighbor.first) && neighbor.second > max_neighbor.second) {
-                max_neighbor = neighbor;
+            if (!visited.at(neighbor.first) && neighbor.second > smallest_neighbor.second) {
+                smallest_neighbor = neighbor;
             }
         }
-        if (max_neighbor.first != "") {
-            q.push(max_neighbor.first);
-            max_distance += max_neighbor.second;
+        if (smallest_neighbor.first != "") {
+            vertex = smallest_neighbor.first;
+            max_distance += smallest_neighbor.second;
+        } else {
+            break;
         }
     }
     return max_distance;
 }
 
-int maximum_using_primm() {
+int maximum() {
     int maximum = 0;
     for (const auto& v: distances) {
-        maximum = std::max(max_primm(v.first), maximum);
+        maximum = std::max(max_dfs(v.first), maximum);
     }
     return maximum;
 }
 
 int main() {
     readfile();
-    std::cout << minimum_using_primm() << std::endl;
-    std::cout << maximum_using_primm() << std::endl;
+    std::cout << minimum() << std::endl;
+    std::cout << maximum() << std::endl;
     return EXIT_SUCCESS;
 }

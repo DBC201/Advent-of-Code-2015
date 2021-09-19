@@ -3,7 +3,7 @@
 
 bool has_increasing_three(std::string str) {
     int i;
-    for (i=0;i<str.length()-3; i++) {
+    for (i=0;i<str.length()-2; i++) {
         if (str[i] == str[i+1]-1 && str[i+2]-1 == str[i+1]) {
             return true;
         }
